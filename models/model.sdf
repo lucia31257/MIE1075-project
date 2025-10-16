@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="supermarket">
+    <static>true</static>
+    <link name="link">
+      <!-- visual -->
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+
+      <!-- collision -->
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>
