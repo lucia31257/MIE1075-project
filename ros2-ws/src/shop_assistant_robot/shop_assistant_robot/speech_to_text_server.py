@@ -1,11 +1,12 @@
 import rclpy
 from rclpy.node import Node
 from my_interfaces.srv import SpeechToText
-
+from faster_whisper import WhisperModel
+import os
 # 假装语音识别（你之后换 Whisper）
-def fake_speech_recognition(path):
-    print("Speech file received:", path)
-    return "milk"  
+#def fake_speech_recognition(path):
+ #   print("Speech file received:", path)
+  #  return "milk"  
 
 class SpeechToTextServer(Node):
 
@@ -16,11 +17,46 @@ class SpeechToTextServer(Node):
             'speech_to_text',
             self.callback
         )
+        self.model = WhisperModel(
+            "base",
+            device="cpu",       # 或 "cuda"（如果你要 GPU）
+            compute_type="int8" # CPU 最快; GPU 可改 "float16"
+        )
         self.get_logger().info("SpeechToText service ready.")
 
+#    def callback(self, request, response):
+ #       text = fake_speech_recognition(request.audio_path)
+  #      response.text = text
+   #     return response
     def callback(self, request, response):
-        text = fake_speech_recognition(request.audio_path)
-        response.text = text
+        audio_path = request.audio_path
+        self.get_logger().info(f"Processing audio file: {audio_path}")
+        
+        try:
+            # Check if file exists
+
+            if not os.path.exists(audio_path):
+                self.get_logger().error(f"Audio file not found: {audio_path}")
+                response.text = ""
+                return response
+            
+            # Transcribe with Whisper
+            segments, info = self.model.transcribe(
+                audio_path,
+                beam_size=5,
+                language="en"  # 可改为 None 自动检测
+            )
+
+            # Join all segments
+            text = "".join([seg.text for seg in segments]).strip()
+
+            self.get_logger().info(f"Transcribed text: {text}")
+            response.text = text
+            
+        except Exception as e:
+            self.get_logger().error(f"Error during transcription: {str(e)}")
+            response.text = ""
+        
         return response
 
 
