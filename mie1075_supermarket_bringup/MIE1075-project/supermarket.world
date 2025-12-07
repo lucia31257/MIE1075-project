@@ -1,0 +1,275 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <world name="supermarket_world">
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <include>
+      <uri>model://supermarket_model</uri>
+      <!-- x y z roll pitch yaw -->
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+
+      <direction>-0.3 0.3 -1</direction>
+
+      <attenuation>
+        <range>100</range>
+        <constant>1.0</constant>
+        <linear>0.0</linear>
+        <quadratic>0.0</quadratic>
+      </attenuation>
+    </light>
+
+
+    <light type="point" name="lamp1">
+      <pose>-1.657347 1.027291 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp2">
+      <pose>0.02917981 1.027291 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp3">
+      <pose>1.660892 1.027291 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp4">
+      <pose>1.692602 -2.040618 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp5">
+      <pose>0.03215122 -2.040618 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp6">
+      <pose>-1.672235 -2.040618 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp7">
+      <pose>-3.218301 -2.040618 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp8">
+      <pose>-3.215139 1.040406 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp9">
+      <pose>-3.215139 2.574041 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp10">
+      <pose>-1.681409 2.574041 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp11">
+      <pose>0.03149597 2.574041 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp12">
+      <pose>1.681 2.574041 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp13">
+      <pose>3.078499 2.574041 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp14">
+      <pose>3.078499 1.030023 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp15">
+      <pose>3.078499 -2.061592 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp16">
+      <pose>3.078499 -0.5086275 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp17">
+      <pose>1.660892 -0.5086275 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp18">
+      <pose>-3.218301 -0.5086275 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp19">
+      <pose>-1.659588 -0.5086275 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+    <light type="point" name="lamp20">
+      <pose>0.03160331 -0.5086275 2.1 0 0 0</pose>
+      <diffuse>0.6 0.6 0.6 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>4</range>
+        <constant>0.1</constant>
+        <linear>0.2</linear>
+        <quadratic>0.05</quadratic>
+      </attenuation>
+    </light>
+
+
+  </world>
+</sdf>

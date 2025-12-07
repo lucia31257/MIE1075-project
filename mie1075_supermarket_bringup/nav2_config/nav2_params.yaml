@@ -1,0 +1,53 @@
+amcl:
+  ros__parameters:
+    use_sim_time: true
+    min_particles: 100
+    max_particles: 5000
+    laser_model_type: "likelihood_field"
+    odom_frame_id: "odom"
+    base_frame_id: "base_footprint"
+    scan_topic: "scan"
+
+map_server:
+  ros__parameters:
+    use_sim_time: true
+    yaml_filename: "MIE1075-project/maps/supermarket_map.yaml"
+
+planner_server:
+  ros__parameters:
+    expected_planner_frequency: 20.0
+
+controller_server:
+  ros__parameters:
+    controller_frequency: 20.0
+
+bt_navigator:
+  ros__parameters:
+    use_sim_time: true
+
+waypoint_follower:
+  ros__parameters:
+    use_sim_time: true
+
+# 管 pure localization（用现成地图：map_server + amcl）
+lifecycle_manager_localization:
+  ros__parameters:
+    use_sim_time: true
+    autostart: true
+    node_names:
+      - map_server
+      - amcl
+
+# 管导航相关节点（planner / controller / bt_navigator 等）
+lifecycle_manager_navigation:
+  ros__parameters:
+    use_sim_time: true
+    autostart: true
+    node_names:
+      - controller_server
+      - planner_server
+      - smoother_server
+      - behavior_server
+      - bt_navigator
+      - waypoint_follower
+
