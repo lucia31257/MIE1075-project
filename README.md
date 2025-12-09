@@ -1,7 +1,10 @@
 # Database
-- Use SQLite
-## How to update the database
-Edit the csv files in `src/shop_assistant_robot/resource`. If the schema changed(add/change/delete columns), update the schema in `src/shop_assistant_robot/script/init_db.py` line 15-32.
+- Use Weaviate
+- Start the database in docker
+```
+docker-compose up -d
+```
+
 # Test ui and ros voice rec node
 1. start ros2 node
 ```

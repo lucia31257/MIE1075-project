@@ -17,14 +17,14 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='lucia',
-    maintainer_email='lucia31257@gmail.com',
+
     description='Shop Assistant Robot',
     license='MIT',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
             'speech_to_text_server = shop_assistant_robot.speech_to_text_server:main',
+            'weaviate_search_node = shop_assistant_robot.weaviate_search_node:main'
         ],
     },
 )
