@@ -5,9 +5,10 @@ from faster_whisper import WhisperModel
 from std_msgs.msg import String
 import os
 # 假装语音识别（你之后换 Whisper）
-#def fake_speech_recognition(path):
- #   print("Speech file received:", path)
-  #  return "milk"  
+# def fake_speech_recognition(path):
+#   print("Speech file received:", path)
+#  return "milk"
+
 
 class SpeechToTextServer(Node):
 
@@ -21,8 +22,8 @@ class SpeechToTextServer(Node):
         )
         self.model = WhisperModel(
             "base",
-            device="cpu",       
-            compute_type="int8" 
+            device="cpu",
+            compute_type="int8"
         )
         self.get_logger().info("SpeechToText service ready.")
         # publisher
@@ -31,29 +32,34 @@ class SpeechToTextServer(Node):
             '/search/query',
             10
         )
-        
+        self.status = self.create_publisher(
+            String,
+            '/search/status',
+            10
+        )
+
 
 #    def callback(self, request, response):
  #       text = fake_speech_recognition(request.audio_path)
   #      response.text = text
    #     return response
+
     def callback(self, request, response):
         audio_path = request.audio_path
         self.get_logger().info(f"Processing audio file: {audio_path}")
-        
+
         try:
             # Check if file exists
-
             if not os.path.exists(audio_path):
                 self.get_logger().error(f"Audio file not found: {audio_path}")
                 response.text = ""
                 return response
-            
+
             # Transcribe with Whisper
             segments, info = self.model.transcribe(
                 audio_path,
                 beam_size=5,
-                language="en"  
+                language="en"
             )
 
             # Join all segments
@@ -61,19 +67,25 @@ class SpeechToTextServer(Node):
 
             self.get_logger().info(f"Transcribed text: {text}")
             response.text = text
-            try:
-                msg = String()
-                msg.data = text
-                self.query.publish(msg)
-                self.get_logger().info("Published transcription to /search/query")
-            except Exception as e_pub:
-                self.get_logger().error(f"Failed to publish /search/query: {e_pub}")
+            if text:
+                try:
+                    msg = String()
+                    msg.data = text
+                    self.query.publish(msg)
+                    self.get_logger().info("Published transcription to /search/query")
 
-            
+                    status_msg = String()
+                    status_msg.data = f"Searching for: {text}"
+                    self.status.publish(status_msg)
+                    self.get_logger().info("Published search status")
+                except Exception as e_pub:
+                    self.get_logger().error(
+                        f"Failed to publish /search/query: {e_pub}")
+
         except Exception as e:
             self.get_logger().error(f"Error during transcription: {str(e)}")
             response.text = ""
-        
+
         return response
 
 

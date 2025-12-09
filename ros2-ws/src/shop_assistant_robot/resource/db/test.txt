@@ -1,0 +1,8 @@
+curl -X POST http://localhost:8080/v1/graphql \
+-H "Content-Type: application/json" \
+-d '{"query":"{ Get { Product(where:{path:[\"inStock\"],operator:Equal,valueBoolean:true},limit:5,hybrid:{query:\"chicken\",alpha:0.5}) { productName category price locationX locationY } } }"}'
+
+
+curl -X POST http://192.168.2.65:8080/v1/graphql \
+-H "Content-Type: application/json" \
+-d '{"query":"{ Get { Product(where:{path:[\"inStock\"],operator:Equal,valueBoolean:true},limit:5,hybrid:{query:\"chicken\",alpha:0.5}) { productName category price locationX locationY } } }"}'

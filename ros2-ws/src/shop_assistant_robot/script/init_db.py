@@ -1,11 +1,12 @@
 import pandas as pd
 import numpy as np
 import kagglehub
+# from weaviate import WeaviateClient
 import weaviate
 import ast
 import os
 from tqdm import tqdm
-
+cpath = "ros2-ws/src/shop_assistant_robot/resource/db/Datasets_position_with_direction.xlsx"
 print("=" * 70)
 print("SHOP ASSISTANT DATABASE INITIALIZATION")
 print("=" * 70)
@@ -14,7 +15,8 @@ print("=" * 70)
 # STEP 1: Download Kaggle Data
 # ============================================================================
 print("\n[1/7] Downloading Kaggle dataset...")
-path = kagglehub.dataset_download("thedevastator/grocery-product-prices-for-australian-states")
+path = kagglehub.dataset_download(
+    "thedevastator/grocery-product-prices-for-australian-states")
 files = os.listdir(path)
 df = pd.read_csv(os.path.join(path, files[0]), index_col='index')
 print(f"✓ Downloaded {len(df):,} rows")
@@ -46,11 +48,12 @@ for name, g in grouped:
     total_rows = len(g)
     unique_skus = g["Sku"].nunique(dropna=True)
     unique_cats = g["Category"].nunique(dropna=True)
-    in_stock_mask = g["in_stock"].astype(str).str.lower().isin(["1", "true", "yes", "y", "t"])
+    in_stock_mask = g["in_stock"].astype(
+        str).str.lower().isin(["1", "true", "yes", "y", "t"])
     in_stock_ratio = in_stock_mask.sum() / max(1, total_rows)
     key_fields = ["Sku", "Product_Name", "Package_price", "Brand"]
     completeness = g[key_fields].notna().mean(axis=1).mean()
-    
+
     stats.append({
         "city": city,
         "postal_code": postal,
@@ -61,10 +64,12 @@ for name, g in grouped:
         "completeness": completeness,
     })
 
+
 def min_max_series(s):
     if s.max() == s.min():
         return pd.Series([0.5] * len(s), index=s.index)
     return (s - s.min()) / (s.max() - s.min())
+
 
 stats_df = pd.DataFrame(stats)
 stats_df["s_sku"] = min_max_series(stats_df["unique_skus"])
@@ -81,11 +86,13 @@ stats_df["score"] = (
 )
 
 best = stats_df.sort_values("score", ascending=False).iloc[0]
-df = df[(df['city'] == best['city']) & (df['Postal_code'] == best['postal_code'])].copy()
+df = df[(df['city'] == best['city']) & (
+    df['Postal_code'] == best['postal_code'])].copy()
 df.dropna(inplace=True)
 df = df.sort_values(['Category', 'Sub_category']).reset_index(drop=True)
 
-print(f"✓ Selected: {best['city'].title()}, Postal Code: {best['postal_code']}")
+print(
+    f"✓ Selected: {best['city'].title()}, Postal Code: {best['postal_code']}")
 print(f"  Products: {len(df):,}")
 print(f"  Score: {best['score']:.3f}")
 print(f"  Categories: {df['Category'].nunique()}")
@@ -94,6 +101,7 @@ print(f"  Categories: {df['Category'].nunique()}")
 # STEP 4: Assign to 40 Positions
 # ============================================================================
 print("\n[4/7] Assigning products to 40 positions...")
+
 
 def assign_contiguous(df, n_pos):
     N = len(df)
@@ -105,6 +113,7 @@ def assign_contiguous(df, n_pos):
         pos_labels += [i] * size
     return pos_labels[:N]
 
+
 df['position'] = assign_contiguous(df, 40)
 print(f"✓ Assigned {len(df):,} products to 40 positions")
 
@@ -113,7 +122,7 @@ print(f"✓ Assigned {len(df):,} products to 40 positions")
 # ============================================================================
 print("\n[5/7] Loading 40 coordinate points...")
 
-coord_path = os.path.expanduser("~/MIE1075-project/ros2-ws/src/shop_assistant_robot/resource/db/Datasets_position_with_direction.xlsx")
+coord_path = os.path.expanduser(cpath)
 if not os.path.exists(coord_path):
     print(f"✗ ERROR: Coordinate file not found at {coord_path}")
     exit(1)
@@ -121,8 +130,10 @@ if not os.path.exists(coord_path):
 df_xy = pd.read_excel(coord_path, sheet_name="Sheet1")
 xy_cols = [col for col in df_xy.columns if col.startswith('x')]
 
+
 def str_to_tuple(s):
     return ast.literal_eval(s)
+
 
 for col in xy_cols:
     df_xy[col] = df_xy[col].apply(str_to_tuple)
@@ -183,20 +194,32 @@ schema = {
         }
     },
     "properties": [
-        {"name": "productName", "dataType": ["text"], "description": "Product name"},
-        {"name": "category", "dataType": ["text"], "description": "Main category"},
-        {"name": "subCategory", "dataType": ["text"], "description": "Sub category"},
-        {"name": "productGroup", "dataType": ["text"], "description": "Product group"},
+        {"name": "productName", "dataType": [
+            "text"], "description": "Product name"},
+        {"name": "category", "dataType": [
+            "text"], "description": "Main category"},
+        {"name": "subCategory", "dataType": [
+            "text"], "description": "Sub category"},
+        {"name": "productGroup", "dataType": [
+            "text"], "description": "Product group"},
         {"name": "brand", "dataType": ["text"], "description": "Brand name"},
-        {"name": "price", "dataType": ["number"], "description": "Package price"},
-        {"name": "pricePerUnit", "dataType": ["text"], "description": "Price per unit"},
-        {"name": "packageSize", "dataType": ["text"], "description": "Package size"},
+        {"name": "price", "dataType": ["number"],
+            "description": "Package price"},
+        {"name": "pricePerUnit", "dataType": [
+            "text"], "description": "Price per unit"},
+        {"name": "packageSize", "dataType": [
+            "text"], "description": "Package size"},
         {"name": "sku", "dataType": ["text"], "description": "SKU"},
-        {"name": "inStock", "dataType": ["boolean"], "description": "In stock"},
-        {"name": "isSpecial", "dataType": ["boolean"], "description": "Special offer"},
-        {"name": "locationX", "dataType": ["number"], "description": "X coordinate"},
-        {"name": "locationY", "dataType": ["number"], "description": "Y coordinate"},
-        {"name": "position", "dataType": ["int"], "description": "Position ID (0-39)"},
+        {"name": "inStock", "dataType": [
+            "boolean"], "description": "In stock"},
+        {"name": "isSpecial", "dataType": [
+            "boolean"], "description": "Special offer"},
+        {"name": "locationX", "dataType": [
+            "number"], "description": "X coordinate"},
+        {"name": "locationY", "dataType": [
+            "number"], "description": "Y coordinate"},
+        {"name": "position", "dataType": [
+            "int"], "description": "Position ID (0-39)"},
         {"name": "searchText", "dataType": ["text"], "description": "Search text",
          "moduleConfig": {"text2vec-transformers": {"skip": False}}}
     ]
@@ -232,7 +255,7 @@ with client.batch as batch:
                 "position": int(row['position']),
                 "searchText": str(row['search_text'])
             }
-            
+
             batch.add_data_object(
                 data_object=data_object,
                 class_name="Product"
@@ -272,7 +295,8 @@ if result['data']['Get']['Product']:
     for i, product in enumerate(result['data']['Get']['Product'], 1):
         print(f"    {i}. {product['productName']}")
         print(f"       Price: ${product['price']:.2f}")
-        print(f"       Location: ({product['locationX']:.2f}, {product['locationY']:.2f})")
+        print(
+            f"       Location: ({product['locationX']:.2f}, {product['locationY']:.2f})")
 else:
     print("  ✗ No results found")
 
