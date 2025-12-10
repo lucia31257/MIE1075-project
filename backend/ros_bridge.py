@@ -15,6 +15,12 @@ class RosBridge(Node):
         self.cli_stt = self.create_client(SpeechToText, 'speech_to_text')
         while not self.cli_stt.wait_for_service(timeout_sec=1.0):
             self.get_logger().info("Waiting for /speech_to_text service...")
+        # publisher
+        self.search_query_pub = self.create_publisher(
+            String,
+            '/search/query',
+            10
+        )
         # Subscribers
         self.search_results_sub = self.create_subscription(
             String,
@@ -28,11 +34,7 @@ class RosBridge(Node):
             self.search_status_callback,
             10
         )
-        self.search_query_pub = self.create_publisher(
-            String,
-            '/search/query',
-            10
-        )
+
         self.latest_results = None
         self.latest_status = None
         self.results_lock = Lock()
